@@ -34,31 +34,26 @@
 <div id="chat-page" style="display: none;">
     <h2>Chat Online</h2>
     <div id="chat-box"></div>
-    <input type="text" id="input-box" placeholder="Digite sua mensagem...">
-    <button onclick="sendMessage()">Enviar</button>
+    <input type="text" id="input-box" placeholder="Digite sua mensagem..." disabled>
+    <button onclick="sendMessage()" disabled>Enviar</button>
     <button onclick="logout()">Sair</button>
 </div>
 
-        <script src="config.js"></script>
-</head>
-<body>
-
-<script>
-    const password = config.password;
-    console.log("Senha:", password);
-</script>
-    
+<script src="config.js"></script>
 <script>
     var username = "";
-    var password = "Twilestia2010";
+    var loggedIn = false;
 
     function login() {
         var inputUsername = document.getElementById("username").value;
         var inputPassword = document.getElementById("password").value;
-        if (inputPassword === password) {
+        if (inputPassword === config.password) {
             username = inputUsername;
             document.getElementById("login-page").style.display = "none";
             document.getElementById("chat-page").style.display = "block";
+            document.getElementById("input-box").removeAttribute("disabled");
+            document.querySelector("#input-box + button").removeAttribute("disabled");
+            loggedIn = true;
             appendMessage("Você entrou no chat como: " + username);
         } else {
             alert("Senha incorreta!");
@@ -70,6 +65,9 @@
         document.getElementById("login-page").style.display = "block";
         document.getElementById("chat-page").style.display = "none";
         document.getElementById("chat-box").innerHTML = "";
+        document.getElementById("input-box").setAttribute("disabled", true);
+        document.querySelector("#input-box + button").setAttribute("disabled", true);
+        loggedIn = false;
     }
 
     function sendMessage() {
@@ -87,6 +85,16 @@
         chatBox.appendChild(messageElement);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
+
+    // Permitir enviar mensagem pressionando Enter
+    document.getElementById("input-box").addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            if (loggedIn) {
+                sendMessage();
+            }
+        }
+    });
 </script>
 
 </body>
