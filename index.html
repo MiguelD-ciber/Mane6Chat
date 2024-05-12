@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Online</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    #chat-box {
+        width: 300px;
+        height: 400px;
+        border: 1px solid #ccc;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+    }
+    #input-box {
+        width: 100%;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+</style>
+</head>
+<body>
+
+<div id="login-page">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Nome de Usuário Temporário">
+    <input type="password" id="password" placeholder="Senha">
+    <button onclick="login()">Login</button>
+</div>
+
+<div id="chat-page" style="display: none;">
+    <h2>Chat Online</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="input-box" placeholder="Digite sua mensagem...">
+    <button onclick="sendMessage()">Enviar</button>
+    <button onclick="logout()">Sair</button>
+</div>
+
+<script>
+    var username = "";
+    var password = "Twilestia2010";
+
+    function login() {
+        var inputUsername = document.getElementById("username").value;
+        var inputPassword = document.getElementById("password").value;
+        if (inputPassword === password) {
+            username = inputUsername;
+            document.getElementById("login-page").style.display = "none";
+            document.getElementById("chat-page").style.display = "block";
+            appendMessage("Você entrou no chat como: " + username);
+        } else {
+            alert("Senha incorreta!");
+        }
+    }
+
+    function logout() {
+        username = "";
+        document.getElementById("login-page").style.display = "block";
+        document.getElementById("chat-page").style.display = "none";
+        document.getElementById("chat-box").innerHTML = "";
+    }
+
+    function sendMessage() {
+        var message = document.getElementById("input-box").value;
+        if (message.trim() !== "") {
+            appendMessage(username + ": " + message);
+            document.getElementById("input-box").value = "";
+        }
+    }
+
+    function appendMessage(message) {
+        var chatBox = document.getElementById("chat-box");
+        var messageElement = document.createElement("div");
+        messageElement.textContent = message;
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+</script>
+
+</body>
+</html>
